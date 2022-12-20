@@ -6,14 +6,16 @@ import {
     RadioGroup,
     FormControlLabel,
     Checkbox,
+    Autocomplete
 } from '@mui/material'
 import { styled } from '@mui/system'
+
 import { Span } from 'app/components/Typography'
 import React, { useState, useEffect } from 'react'
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
-import { DatePicker } from '@mui/lab'
+import { DatePicker,TimePicker } from '@mui/lab'
 
 const TextField = styled(TextValidator)(() => ({
     width: '100%',
@@ -83,50 +85,50 @@ export default function Employee() {
     } = state
 
 
+    const suggestions = [
+        { label: 'Vadodara' },
+        { label: 'Valsad' },
+        { label: 'Bhavnagar'}
+      
+    ]
 
+   const suggestionsCategory = [
+    { label: 'A' },
+    { label: 'B' },
+    { label: 'C'},
+    { label: 'D'}
+  
+]
+
+const suggestionsPaymentTerms = [
+    { label: '20%' },
+    { label: '30%' },
+    { label: '50%'},
+   
+  
+]
 
   return (
     <Container>
     <ValidatorForm onSubmit={handleSubmit} onError={() => null}>
         <Grid container spacing={6}>
+            
             <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
-                <TextField
-                    type="text"
-                    name="username"
-                    id="standard-basic"
-                    onChange={handleChange}
-                    value={username || ''}
-                    validators={[
-                        'required',
-                        'minStringLength: 4',
-                        'maxStringLength: 9',
-                    ]}
-                    label="Username (Min length 4, Max length 9)"
-                    errorMessages={['this field is required']}
-                />
-                <TextField
-                    label="First Name"
-                    onChange={handleChange}
-                    type="text"
-                    name="firstName"
-                    value={firstName || ''}
-                    validators={['required']}
-                    errorMessages={['this field is required']}
-                />
-                <TextField
-                    label="Email"
-                    onChange={handleChange}
-                    type="email"
-                    name="email"
-                    value={email || ''}
-                    validators={['required', 'isEmail']}
-                    errorMessages={[
-                        'this field is required',
-                        'email is not valid',
-                    ]}
-                />
+               
+            <Autocomplete
+                options={suggestions}
+                getOptionLabel={(option) => option.label}
+                renderInput={(params) => (
+                    <TextField
+                        {...params}
+                        label="City"
+                        variant="outlined"
+                        fullWidth
+                    />
+                )}
+            />
 
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
+<LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DatePicker
                         value={date}
                         onChange={handleDateChange}
@@ -135,7 +137,74 @@ export default function Employee() {
                                 {...props}
                                 // variant="Outlined"
                                 id="mui-pickers-date"
-                                label="Date picker"
+                                label="Batch End Date"
+                                sx={{ mb: 2, width: '100%' }}
+                            />
+                        )}
+                    />
+                </LocalizationProvider>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+
+                <TimePicker
+          label="Time"
+          value="10"
+          onChange={handleChange}
+          renderInput={(params) => <TextField {...params} />}
+        />
+
+</LocalizationProvider>
+
+                <Autocomplete
+                options={suggestionsCategory}
+                getOptionLabel={(option) => option.label}
+                renderInput={(params) => (
+                    <TextField
+                        {...params}
+                        label="Category"
+                        variant="outlined"
+                        fullWidth
+                    />
+                )}
+            />
+                
+                <TextField
+                    label="Payment per Hours"
+                    onChange={handleChange}
+                    name="confirmPassword"
+                    type="number"
+                    value={confirmPassword || ''}
+                    validators={['required']}
+                   
+                />
+               
+               <Autocomplete
+                options={suggestionsPaymentTerms}
+                getOptionLabel={(option) => option.label}
+                renderInput={(params) => (
+                    <TextField
+                        {...params}
+                        label="Payment Terms"
+                        variant="outlined"
+                        fullWidth
+                    />
+                )}
+            />
+
+               
+            </Grid>
+
+            <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
+               
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <DatePicker
+                        value={date}
+                        onChange={handleDateChange}
+                        renderInput={(props) => (
+                            <TextField
+                                {...props}
+                                // variant="Outlined"
+                                id="mui-pickers-date"
+                                label="Batch Start Date"
                                 sx={{ mb: 2, width: '100%' }}
                             />
                         )}
@@ -143,82 +212,34 @@ export default function Employee() {
                 </LocalizationProvider>
 
                 <TextField
-                    sx={{ mb: 4 }}
-                    label="Credit Card"
-                    onChange={handleChange}
-                    type="number"
-                    name="creditCard"
-                    value={creditCard || ''}
-                    validators={[
-                        'required',
-                        'minStringLength:16',
-                        'maxStringLength: 16',
-                    ]}
-                    errorMessages={['this field is required']}
-                />
-            </Grid>
-
-            <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
-                <TextField
-                    label="Mobile Nubmer"
-                    onChange={handleChange}
-                    type="text"
-                    name="mobile"
-                    value={mobile || ''}
-                    validators={['required']}
-                    errorMessages={['this field is required']}
-                />
-                <TextField
-                    label="Password"
+                    label="Course Name with Code"
                     onChange={handleChange}
                     name="password"
-                    type="password"
+                    type="text"
                     value={password || ''}
                     validators={['required']}
                     errorMessages={['this field is required']}
                 />
                 <TextField
-                    label="Confirm Password"
+                    label="Course Total Hours"
                     onChange={handleChange}
                     name="confirmPassword"
-                    type="password"
+                    type="number"
                     value={confirmPassword || ''}
-                    validators={['required', 'isPasswordMatch']}
-                    errorMessages={[
-                        'this field is required',
-                        "password didn't match",
-                    ]}
+                    validators={['required']}
+                   
                 />
-                <RadioGroup
-                    sx={{ mb: 2 }}
-                    value={gender || ''}
-                    name="gender"
+
+<TextField
+                    label="Number of Students"
                     onChange={handleChange}
-                    row
-                >
-                    <FormControlLabel
-                        value="Male"
-                        control={<Radio color="secondary" />}
-                        label="Male"
-                        labelPlacement="end"
-                    />
-                    <FormControlLabel
-                        value="Female"
-                        control={<Radio color="secondary" />}
-                        label="Female"
-                        labelPlacement="end"
-                    />
-                    <FormControlLabel
-                        value="Others"
-                        control={<Radio color="secondary" />}
-                        label="Others"
-                        labelPlacement="end"
-                    />
-                </RadioGroup>
-                <FormControlLabel
-                    control={<Checkbox />}
-                    label="I have read and agree to the terms of service."
+                    name="confirmPassword"
+                    type="number"
+                    value={confirmPassword || ''}
+                    validators={['required']}
+                   
                 />
+               
             </Grid>
         </Grid>
         <Button color="primary" variant="contained" type="submit">
